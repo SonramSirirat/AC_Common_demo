@@ -3,13 +3,24 @@ info:
   version: 1.0.0
   title: Technical Specification AC common function
   description: This document describes the requirements for connection details and API service information from SINGULARITY (SGL) to Partners.
+  contact:
+    email: sample@email.com
+    name: Broker Team
+    url: https://google.com
+  termsOfService: https://google.com
+
+tags:
+- name: Notification
+  description: Everythings about notification
+- name: Others
+  description: Everythings about others
 
 servers:
   - url: https://api-dev.adldigitalservice.com/anticorrupt-api/common/
     description: Devlopment server
-  - url: https://api.server.test/v1
+  - url: https://api.server.staging/v1
     description: Staging server
-  - url: https://api.server.test/v1
+  - url: https://api.server.production/v1
     description: Production server
 
 components:
@@ -20,6 +31,7 @@ components:
   
   schemas:
     body_parameter:
+      description: Contain a body parameters
       type: object
       required:
         - transaction
@@ -170,6 +182,24 @@ components:
                 description: Receiver
   
   responses:
+    
+    200Success:
+      description: Successfully created
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              httpStatus:
+                type: string
+                example: "200"
+              resultCode:
+                type: string
+                example: "20000"
+              developerMessage:
+                type: string
+                example: "success"
+
     403Error:
       description: Missing mandatory Header & Body from domain service
       content:
@@ -241,7 +271,7 @@ components:
     PageOffset:
       name: offset
       in: query
-      description: Specifies the page number of the artists to be displayed
+      description: Specifies the page number of the others to be displayed
       schema:
         type: integer
         maximum: 1024
@@ -251,26 +281,28 @@ components:
 
 paths:
   /createNotiIndividual:
+    
     get:
-      description: Returns a list of artists
+      summary: list an individual notification
+      description: Create a individual notification
+      tags:
+        - Notification
       parameters:
         - $ref: '#/components/parameters/PageLimit'
         - $ref: '#/components/parameters/PageOffset'
       responses:
+        
         '200':
-          description: Successfully returned a list of artists
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/body_parameter'
-                maxItems: 100
+          $ref: '#/components/responses/200Success'
+        
         '404':
           $ref: '#/components/responses/404Error'
 
     post:
+      summary: Create an individual notification
       description: AC received a request from domain service with the following parameters.  
+      tags:
+        - Notification
       requestBody:
         required: true
         content:
@@ -282,30 +314,20 @@ paths:
               maxItems: 100
 
       responses:
-        '200':
-          description: Successfully created a new artist
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Successfully created a new artist
-        '404':
-          description: Invalid request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Invalid request
 
-  /artists/{username}:
+        '200':
+          $ref: '#/components/responses/200Success'
+        
+        '404':
+          $ref: '#/components/responses/404Error'
+
+  /others/{username}:
+    
     get:
-      description: Obtain information about an artist from his or her unique username
+      summary: Obtain others information
+      description: Obtain information about an others from his or her unique username
+      tags:
+        - Others
       parameters:
         - name: username
           in: path
@@ -314,18 +336,9 @@ paths:
             type: string
 
       responses:
+        
         '200':
-          description: Successfully returned an artist
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/body_parameter'
-        '400':
-          description: Invalid request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
+          $ref: '#/components/responses/200Success'
+        
+        '404':
+          $ref: '#/components/responses/404Error'
