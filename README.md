@@ -8,10 +8,10 @@ The Notification API is a JavaScript library that allows you to send and manage 
 1. Installation
 2. Usage
 3. API Reference
-- initialize
-- sendNotification
-- requestPermission
-- getPermissionStatus
+    - initialize
+    - sendNotification
+    - requestPermission
+    - getPermissionStatus
 4. Examples
 5. Contributing
 6. License
