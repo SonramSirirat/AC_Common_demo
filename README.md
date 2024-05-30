@@ -1,5 +1,5 @@
 
-# Notification
+# AC Common
 
 The Notification API is a JavaScript library that allows you to send and manage notifications within your web application. This README provides an overview of the API, its installation, usage, and examples.
 
